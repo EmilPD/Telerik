@@ -1,0 +1,77 @@
+.wrapper {
+    margin-top: 150px;
+    display: flex;
+    flex-flow: row;
+    align-items: top;
+    justify-content: center;
+}
+
+.controls-container, .tools, .colors{
+    display: inline-flex;
+    flex-flow: column;
+}
+
+canvas {
+    border: 1px solid black; 
+    border-radius: 10px;
+    box-shadow: 20px 20px 22px -13px rgba(136,136,136,1);
+    cursor: crosshair;
+}
+
+.colors {
+    margin-top: 20px;
+    align-items: flex-end;
+}
+
+.color {
+    border: 1px solid black;
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    margin: 5px 7px 7px 0;
+    cursor: pointer;
+    opacity: 0;
+    animation: expand 2s linear;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
+}
+
+.color:hover, .colors input:checked+label {
+    border: 3px solid black;
+    margin: 3px 5px 5px 0;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.tool:hover, .tools input:checked+label:not([data-tool="clear"]) {
+    background-color: #acccf7;
+}
+
+.tool {
+    margin: 5px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+ path{
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+    animation: draw 6s linear;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes expand {
+  to {
+    opacity: 1;
+  }
+}

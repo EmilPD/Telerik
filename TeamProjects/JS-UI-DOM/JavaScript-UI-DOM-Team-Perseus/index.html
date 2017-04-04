@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Simple Paint</title>
+
+    <script id="tools-template" type="text/x-handlebars-template">
+        {{#each this}}
+        <input type="radio" id="{{name}}" name="toolSelect">
+        <label for="{{name}}" class="tool" data-tool="{{name}}">
+                <svg width="40" height="40">{{{svg}}}</svg>
+        </label> 
+        {{/each}}
+    </script>
+    <script id="colors-template" type="text/x-handlebars-template">
+        {{#each this}}
+        <input type="radio" id="{{this}}" name="color">
+        <label for="{{this}}" class="color" data-color="{{this}}"></label> {{/each}}
+    </script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="controls-container">
+            <div class="tools"> </div>
+            <div class="colors"> </div>
+        </div>
+        <canvas id="canvas" width="800" height="476"></canvas>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.9/fabric.min.js"></script>
+    <script src="./scripts/tools/pencil.js"></script>
+    <script src="./scripts/tools/rectangle.js"></script>
+    <script src="./scripts/tools/circle.js"></script>
+    <script src="./scripts/tools/triangle.js"></script>
+    <script src="./scripts/tools/line.js"></script>
+    <script src="./scripts/tools/clear.js"></script>
+    <script src="./scripts/toolsManager.js"></script>
+</body>
+
+</html>
