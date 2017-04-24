@@ -1,0 +1,3 @@
+The bottleneck is in Class "OrbitsCalculator" in Method "EarthRotation()"
+
+Quickfix: i changed the loop variable "step" type from decimal to double and removed the Cast inside the loop body.
