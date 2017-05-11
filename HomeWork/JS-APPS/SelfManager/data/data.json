@@ -1,0 +1,61 @@
+{
+  "users": [
+    {
+      "username": "proba",
+      "passHash": "2b2804c0e3e5a32a449f1c9d022b8c77227b4443",
+      "usernameLower": "proba",
+      "authKey": "undefinedGfd@&=ZcVtVGo+onh^g=RB$z#vsrQgxw&!(Ncbo-@RybpRxCF)(",
+      "id": "924a7bc1-de6b-4414-87c6-903aa97a3da5",
+      "events": []
+    },
+    {
+      "username": "",
+      "passHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "usernameLower": "",
+      "authKey": "undefinedJSPdeoZna&BjP%=V&-yJ+P$xXO_RgIUfnLSHqIPzVq+tY+PZjUV",
+      "id": "c2e2e4d2-02af-40c9-879c-a39a31b03820",
+      "events": []
+    },
+    {
+      "username": "admin-emo",
+      "passHash": "da373f85e6e07b5c93c8e94bc54d1b65e1c6ae51",
+      "usernameLower": "admin-emo",
+      "authKey": "undefinedgRAAjfGQ$Of@yTBdDNQFeFjMEr$yKTdSfl^NERJNB&sz_OrofxX",
+      "id": "fb1dfcd0-3b20-4d79-aa53-8e1407ef4392",
+      "events": [
+        {
+          "id": 392147,
+          "title": "asd",
+          "category": "asd",
+          "description": "asdasd",
+          "date": null,
+          "creatorId": "fb1dfcd0-3b20-4d79-aa53-8e1407ef4392",
+          "users": [
+            "fb1dfcd0-3b20-4d79-aa53-8e1407ef4392",
+            "fb1dfcd0-3b20-4d79-aa53-8e1407ef4392"
+          ]
+        },
+        {
+          "id": 392147,
+          "title": "asd",
+          "category": "asd",
+          "description": "asdasd",
+          "date": null,
+          "creatorId": "fb1dfcd0-3b20-4d79-aa53-8e1407ef4392",
+          "users": [
+            "fb1dfcd0-3b20-4d79-aa53-8e1407ef4392",
+            "fb1dfcd0-3b20-4d79-aa53-8e1407ef4392"
+          ]
+        }
+      ],
+      "todos": [
+        {
+          "id": 406731,
+          "text": "asd",
+          "state": false,
+          "category": "asd"
+        }
+      ]
+    }
+  ]
+}

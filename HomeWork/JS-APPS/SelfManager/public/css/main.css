@@ -1,0 +1,33 @@
+html {
+  min-height: 100%;
+  position: relative;
+}
+body {
+  margin-bottom: 60px;
+}
+#user-sign-in-out {
+  margin-top: 20px;
+}
+.footer {
+  background-color: #dcdcdc;
+  bottom: 0;
+  height: 60px;
+  position: absolute;
+  width: 100%;
+}
+.footer ul {
+  margin-top: 10px;
+}
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+.footer > .container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+code {
+  font-size: 80%;
+}
