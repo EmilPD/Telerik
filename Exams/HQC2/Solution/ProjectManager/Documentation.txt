@@ -1,0 +1,11 @@
+﻿Bugs:
+
+#1 - In FileLogger in Method "Error(object msg)" - there is a comment that prevent logging of error messages.
+#2 - In CommandFactory - there is no createuser in switch/case - a added it.
+#3 - in createUser command
+#4 - in createTask command
+#5 - in CommandProcessor there is unreachable code " if (commandsList.Split(' ').Count() > 10)"
+
+Bottleneck:
+
+#1 - BuildCommand()
