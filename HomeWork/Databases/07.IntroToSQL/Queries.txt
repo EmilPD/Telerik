@@ -1,67 +1,91 @@
 6. SELECT Salary 
-FROM Employees
+	FROM Employees
 
-7. SELECT FirstName + '.' + LastName AS [Name] 
-FROM Employees
+7. SELECT FirstName + ' ' + MiddleName + ' ' + LastName AS [Name] 
+	FROM Employees
 
 8. SELECT FirstName + '.' + LastName + '@telerik.com' AS [Full Email Addresses] 
-FROM Employees
+	FROM Employees
 
 9. SELECT DISTINCT Salary 
-FROM Employees
+	FROM Employees
 
 10. SELECT * 
-FROM Employees 
-	WHERE JobTitle = 'Sales Representative'
+	FROM Employees 
+		WHERE JobTitle = 'Sales Representative'
 	
 11. SELECT FirstName + ' ' + LastName 
-FROM Employees 
-	WHERE FirstName LIKE 'SA%'
+	FROM Employees 
+		WHERE FirstName LIKE 'SA%'
 	
 12. SELECT FirstName + ' ' + LastName 
-FROM Employees 
-	WHERE LastName LIKE '%ei%'
+	FROM Employees 
+		WHERE LastName LIKE '%ei%'
 	
 13. SELECT Salary 
-FROM Employees 
-	WHERE Salary BETWEEN 20000 AND 30000
+	FROM Employees 
+		WHERE Salary BETWEEN 20000 AND 30000
 	
 14. SELECT FirstName + ' ' + LastName 
-FROM Employees 
-	WHERE Salary IN (25000, 14000, 12500, 23600)
+	FROM Employees 
+		WHERE Salary IN (25000, 14000, 12500, 23600)
 	
 15. SELECT * 
-FROM Employees 
-	WHERE ManagerID IS NULL
+	FROM Employees 
+		WHERE ManagerID IS NULL
 	
-16. SELECT * 
-FROM Employees 
-	WHERE Salary > 50000 
-	ORDER BY Salary DESC
+16. SELECT FirstName + ' ' + LastName AS [Employee] 
+	FROM Employees 
+		WHERE Salary > 50000 
+		ORDER BY Salary DESC
 
-17. SELECT TOP (5) FirstName + ' ' + LastName AS [Name], Salary 
-FROM Employees 
-	ORDER BY Salary DESC
+17. SELECT TOP (5) FirstName + ' ' + LastName AS [Employee], Salary 
+	FROM Employees 
+		ORDER BY Salary DESC
 
-18. SELECT e.FirstName + ' ' + e.LastName AS [Name], a.AddressText AS [Address] 
-FROM Employees e
-	INNER JOIN Addresses a
-	ON e.AddressID = a.AddressID
+18. SELECT e.FirstName + ' ' + e.LastName AS [Employee], a.AddressText AS [Address] 
+	FROM Employees e
+		INNER JOIN Addresses a
+			ON e.AddressID = a.AddressID
 
-19. SELECT e.FirstName + ' ' + e.LastName AS [Name], a.AddressText AS [Address] 
-FROM Employees e, Addresses a
-	WHERE e.AddressID = a.AddressID
+19. SELECT e.FirstName + ' ' + e.LastName AS [Employee], a.AddressText AS [Address] 
+	FROM Employees e, Addresses a
+		WHERE e.AddressID = a.AddressID
 
 20. SELECT e.FirstName + ' ' + e.LastName AS [Name], m.FirstName + ' ' + m.LastName AS [Manager's Name] 
-FROM Employees e
-	JOIN Employees m
-	ON e.ManagerID = m.EmployeeID
+	FROM Employees e
+		JOIN Employees m
+			ON e.ManagerID = m.EmployeeID
 
 21. SELECT e.FirstName + ' ' + e.LastName AS [Name]
 	,m.FirstName + ' ' + m.LastName AS [Manager's Name]
 	,a.AddressText AS [Address]
-FROM Employees e
-	JOIN Employees m
-	ON e.ManagerID = m.EmployeeID
-	JOIN Addresses a
-	ON e.AddressID = a.AddressID
+	FROM Employees e
+		JOIN Employees m
+			ON e.ManagerID = m.EmployeeID
+		JOIN Addresses a
+			ON e.AddressID = a.AddressID
+
+22. SELECT Name FROM Departments   
+    UNION   
+    SELECT Name FROM Towns
+
+23. SELECT e.FirstName + ' ' + e.LastName AS [Employee]
+	,m.FirstName + ' ' + m.LastName AS [Manager]
+	FROM Employees e
+		RIGHT OUTER JOIN Employees m
+			ON e.ManagerID = m.EmployeeID
+
+SELECT e.FirstName + ' ' + e.LastName AS [Employee]
+	,m.FirstName + ' ' + m.LastName AS [Manager]
+	FROM Employees e
+		LEFT OUTER JOIN Employees m
+			ON e.ManagerID = m.EmployeeID
+
+24. SELECT e.FirstName + ' ' + e.LastName AS [Employee], e.HireDate, d.Name AS [Department]
+	FROM Employees e
+		JOIN Departments d
+		ON e.DepartmentID = d.DepartmentID
+		WHERE YEAR(e.HireDate) > 1995 AND YEAR(e.HireDate) < 2005
+		AND d.Name = 'Sales'
+		OR d.Name = 'Finance'
