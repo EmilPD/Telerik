@@ -1,0 +1,191 @@
+1. SELECT FirstName + ' ' + LastName AS [Name], Salary
+FROM Employees
+	WHERE Salary =
+		(SELECT MIN(Salary) FROM Employees)
+
+2. SELECT FirstName + ' ' + LastName AS [Name], Salary
+FROM Employees
+	WHERE Salary <=
+		(SELECT MIN(Salary) * 1.1 FROM Employees)
+
+3. SELECT e.FirstName + ' '  + e.LastName AS [Full Name], e.Salary, d.Name AS [Department]
+	FROM Employees e
+		LEFT OUTER JOIN Departments d
+		ON e.DepartmentID = d.DepartmentID
+		WHERE Salary =
+			(SELECT MIN(Salary) FROM Employees
+				WHERE DepartmentID = e.DepartmentID)
+
+4. SELECT AVG(Salary) AS [Average Salary] FROM Employees
+	WHERE DepartmentID = 1
+
+5. SELECT d.Name AS [Department], AVG(e.Salary) AS [Average Salary]
+	FROM Employees e
+		JOIN Departments d
+		ON e.DepartmentID = d.DepartmentID
+		WHERE d.Name = 'Sales'
+	GROUP BY d.Name
+
+6. SELECT d.Name AS [Department], COUNT(*) AS [Number of Employees]
+	FROM Employees e
+		JOIN Departments d
+		ON e.DepartmentID = d.DepartmentID
+		WHERE d.Name = 'Sales'
+	GROUP BY d.Name
+
+7. SELECT COUNT(*) AS [Number of Employees that have Manager]
+	FROM Employees e
+		JOIN Employees m
+		ON e.ManagerID = m.EmployeeID
+
+8. SELECT COUNT(*) AS [Number of Employees that have no Manager]
+	FROM Employees
+		WHERE ManagerID IS NULL
+
+9. SELECT d.Name AS [Department], AVG(e.Salary) AS [Average Salary]
+	FROM Employees e
+		JOIN Departments d
+		ON e.DepartmentID = d.DepartmentID
+	GROUP BY d.Name
+
+10. SELECT d.Name AS [Department], t.Name AS [Town], COUNT(*) AS [Employee count]
+	FROM Employees e
+		JOIN Departments d
+			ON e.DepartmentID = d.DepartmentID
+		JOIN Addresses a
+			ON a.AddressID = e.AddressID
+		JOIN Towns t
+			ON a.TownID = t.TownID
+	GROUP BY d.Name, t.Name
+
+11. SELECT m.FirstName, m.LastName
+	FROM Employees e
+		JOIN Employees m
+		ON e.ManagerID = m.EmployeeID
+	GROUP BY m.FirstName, m.LastName
+	HAVING COUNT(*) = 5
+
+12. SELECT e.FirstName + ' ' + e.LastName AS [Employee],
+	ISNULL(m.FirstName + ' ' + m.LastName, '(no manager)') AS [Manager]
+		FROM Employees e
+			LEFT OUTER JOIN Employees m
+			ON e.ManagerID = m.EmployeeID
+
+13. SELECT FirstName, LastName
+	FROM Employees
+		WHERE LEN(LastName) = 5
+
+14. SELECT FORMAT(GETDATE(), 'dd.MMM.yyyy hh:mm:ss:fff') AS [Current Date]
+
+15. CREATE TABLE Users (
+	ID int IDENTITY,
+	Username nvarchar(50) UNIQUE NOT NULL,
+	[Password] nvarchar(50) NOT NULL,
+	FullName nvarchar(100) NOT NULL,
+	LastLogin DATETIME,
+	CONSTRAINT PK_Users PRIMARY KEY(ID),
+	CONSTRAINT [Password] CHECK(LEN(Password) > 5)
+)
+GO
+
+16. CREATE VIEW [Users Logged-in Today] AS
+	SELECT *
+		FROM Users
+		WHERE CONVERT(DATE, LastLogin) = CONVERT(DATE, GETDATE())
+
+For Testing above VIEW ( SELECT * FROM [Users Logged-in Today] )
+
+17. CREATE TABLE Groups (
+	ID int IDENTITY,
+	Name nvarchar(50) UNIQUE NOT NULL,
+	CONSTRAINT PK_Groups PRIMARY KEY(ID)
+)
+GO
+
+18. ALTER TABLE Users 
+	ADD GroupID int
+
+ALTER TABLE Users
+	ADD CONSTRAINT FK_Users_Groups
+	  FOREIGN KEY (GroupID)
+	  REFERENCES Groups(ID)
+
+19. INSERT INTO Users 
+	VALUES
+		('dandan5', 'password5', 'dan dan5', '2017-05-22', 3),
+		('dandan4', 'password4', 'dan dan4', '2017-05-21', 4),
+		('dandan3', 'password3', 'dan dan3', '2017-05-23', 5)
+
+INSERT INTO Groups 
+	VALUES
+		('osma'),
+		('deweta'),
+		('deseta')
+
+20. UPDATE Users
+	SET GroupID = 3
+	WHERE ID = 6
+		OR ID = 7
+
+UPDATE Groups
+	SET Name = 'Edinadeseta'
+	WHERE ID = 3
+
+21. DELETE FROM Users
+	WHERE FullName LIKE 'dan%'
+
+22. ALTER TABLE Users
+	ALTER COLUMN [LastLogin] DATETIME NULL 
+	GO
+
+INSERT INTO Users([Username], [Password], [FullName], [LastLogin])
+	SELECT LOWER(SUBSTRING(FirstName, 1, 1) + LastName),
+		LOWER(SUBSTRING(FirstName, 1, 1) + LastName),
+		FirstName + ' ' + LastName,
+		NULL
+	FROM Employees
+
+23. ALTER TABLE Users
+	ALTER COLUMN [Password] NVARCHAR(50) NULL 
+	GO
+
+UPDATE Users
+	SET [Password] = NULL
+		WHERE DATEDIFF(DAY, [LastLogin], '03.10.2010 00:00:00:000') > 0
+
+24. DELETE FROM Users
+	WHERE Password IS NULL
+
+25. SELECT AVG(Salary) AS [Average Salary], d.Name AS [Department], e.JobTitle 
+	FROM Employees e
+		JOIN Departments d
+			ON e.DepartmentID = d.DepartmentID
+	GROUP BY d.Name, e.JobTitle
+
+26. SELECT Salary AS [Minimal Salary], d.Name AS [Department], e.JobTitle, e.FirstName, e.LastName
+	FROM Employees e
+		JOIN Departments d
+			ON e.DepartmentID = d.DepartmentID
+	WHERE Salary = 
+		(SELECT MIN(Salary) FROM Employees a
+			WHERE a.DepartmentID = d.DepartmentID)
+
+27. SELECT TOP (1) t.Name AS [Town], COUNT(*) AS [Employee's Count]
+	FROM Employees e
+		JOIN Addresses a
+			ON e.AddressID = a.AddressID
+		JOIN Towns t
+			ON a.TownID = t.TownID
+	GROUP BY t.Name
+	ORDER BY [Employee's Count] DESC
+
+28. SELECT t.Name AS [Town], COUNT(DISTINCT e.ManagerID) AS [Manager's Count]
+	FROM Employees e
+		JOIN Addresses a
+			ON e.AddressID = a.AddressID
+		JOIN Towns t
+			ON a.TownID = t.TownID
+	GROUP BY t.Name
+	ORDER BY [Manager's Count] DESC
+
+29. 
