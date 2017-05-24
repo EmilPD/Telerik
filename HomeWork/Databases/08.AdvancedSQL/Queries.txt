@@ -188,4 +188,116 @@ UPDATE Users
 	GROUP BY t.Name
 	ORDER BY [Manager's Count] DESC
 
-29. 
+29. CREATE TABLE WorkHours (
+	[ID] int IDENTITY,
+	[EmployeeID] int NOT NULL,
+	[Date] DATE NOT NULL,
+	[Task] NVARCHAR(150) NOT NULL,
+	[Hours] float NOT NULL,
+	[Comments] NVARCHAR(250)
+	CONSTRAINT PK_WorkHours PRIMARY KEY(ID),
+	CONSTRAINT FK_WorkHours_Employees
+	  FOREIGN KEY (EmployeeID)
+	  REFERENCES Employees(EmployeeID)
+)
+
+INSERT INTO WorkHours
+	VALUES
+		(10, GETDATE(), 'task1', 2.5, 'comment 1'),
+		(11, GETDATE(), 'task2', 4.5, 'comment 2'),
+		(12, GETDATE(), 'task3', 5.5, 'comment 3')
+
+UPDATE WorkHours
+	SET [Hours] = 6
+	WHERE ID = 3
+
+DELETE FROM WorkHours
+	WHERE ID = 3
+
+CREATE TABLE WorkHoursLogs (
+	[ID] int IDENTITY,
+	[EmployeeID] int NOT NULL,
+	[Date] DATE NOT NULL,
+	[Task] NVARCHAR(150) NOT NULL,
+	[Hours] float NOT NULL,
+	[Comments] NVARCHAR(250),
+	[Command] VARCHAR(50),
+	CONSTRAINT PK_WorkHoursLogs PRIMARY KEY(ID)
+)
+
+CREATE TRIGGER trig_WorkHours_Insert
+	ON WorkHours
+		FOR INSERT 
+		AS
+		BEGIN
+			INSERT INTO WorkHoursLogs([EmployeeId], [Date], [Task], [Hours], [Comments], [Command])
+				SELECT [EmployeeId], [Date], [Task], [Hours], [Comments], 'INSERT'
+				FROM INSERTED
+		END
+		GO
+
+CREATE TRIGGER trig_WorkHours_Delete 
+	ON WorkHours
+		FOR DELETE 
+		AS
+		BEGIN
+			INSERT INTO WorkHoursLogs([EmployeeId], [Date], [Task], [Hours], [Comments], [Command])
+				SELECT [EmployeeId], [Date], [Task], [Hours], [Comments], 'DELETE'
+				FROM DELETED
+		END
+		GO
+
+CREATE TRIGGER trig_WorkHours_Update 
+	ON WorkHours
+		FOR UPDATE 
+		AS
+		BEGIN
+			INSERT INTO WorkHoursLogs([EmployeeId], [Date], [Task], [Hours], [Comments], [Command])
+				SELECT [EmployeeId], [Date], [Task], [Hours], [Comments], 'UPDATE'
+				FROM INSERTED
+		END
+		GO
+
+INSERT INTO WorkHours
+	VALUES
+		(13, GETDATE(), 'task1', 2.5, 'comment 1'),
+		(14, GETDATE(), 'task2', 4.5, 'comment 2'),
+		(15, GETDATE(), 'task3', 5.5, 'comment 3')
+
+UPDATE WorkHours
+	SET [Hours] = 6
+	WHERE EmployeeID = 13
+
+DELETE FROM WorkHours
+	WHERE EmployeeID = 13
+
+30. BEGIN TRAN
+	ALTER TABLE Departments
+		DROP CONSTRAINT FK_Departments_Employees
+
+	ALTER TABLE EmployeesProjects
+		DROP CONSTRAINT FK_EmployeesProjects_Employees
+
+	ALTER TABLE WorkHours
+		DROP CONSTRAINT FK_WorkHours_Employees
+
+	DELETE FROM Employees
+		SELECT d.Name
+			FROM Employees e
+				JOIN Departments d
+					ON e.DepartmentID = d.DepartmentID
+			WHERE d.Name = 'Sales'
+			GROUP BY d.Name
+ROLLBACK TRAN
+
+31. BEGIN TRAN
+		DROP TABLE EmployeesProjects
+	ROLLBACK TRAN
+
+32. SELECT *  INTO  #TempEmployeesProjects
+	FROM EmployeesProjects
+
+	DROP TABLE EmployeesProjects
+
+	SELECT * INTO EmployeesPRojects
+		FROM #TempEmployeesProjects
