@@ -1,0 +1,98 @@
+1. CREATE DATABASE TestTSQL
+GO
+
+USE TestTSQL
+
+CREATE TABLE Persons (
+	[Id] INT IDENTITY,
+	[FirstName] NVARCHAR(50),
+	[LastName] NVARCHAR(50),
+	[SSN] INT NOT NULL,
+	CONSTRAINT PK_Persons PRIMARY KEY(Id)
+)
+GO
+
+CREATE TABLE Accounts (
+	[Id] INT IDENTITY,
+	[PersonId] INT,
+	[Balance] MONEY,
+	CONSTRAINT PK_Accounts PRIMARY KEY(Id),
+	CONSTRAINT FK_Accounts_Persons
+		FOREIGN KEY(PersonId)
+		REFERENCES Persons(Id)
+)
+GO
+
+INSERT INTO Persons
+	VALUES
+		('first1', 'last1', 1111),
+		('first2', 'last2', 1112),
+		('first3', 'last3', 1113),
+		('first4', 'last4', 1114),
+		('first5', 'last5', 1115)
+GO
+
+INSERT INTO Accounts
+	VALUES
+		(1, 2000),
+		(2, 3000),
+		(3, 4000),
+		(4, 5000),
+		(5, 6000)
+GO
+
+USE TestTSQL
+GO
+
+CREATE PROC usp_AllPersonsNames
+AS
+	SELECT FirstName + ' ' + LastName AS [FullName]
+		FROM Persons
+GO
+
+EXEC usp_AllPersonsNames
+
+2. USE TestTSQL
+GO
+
+CREATE PROC usp_PersonsWithMoreMoneyThan(
+  @balance money = 1000)
+AS
+  SELECT e.FirstName + ' ' + e.LastName, a.Balance
+  FROM Persons e
+	JOIN Accounts a
+		ON a.PersonId = e.Id
+  WHERE a.Balance > @balance
+  ORDER BY a.Balance DESC
+GO
+
+EXEC usp_PersonsWithMoreMoneyThan 2500
+
+EXEC usp_PersonsWithMoreMoneyThan
+
+3. USE TestTSQL
+GO
+
+CREATE FUNCTION ufn_InterestCalculator(@sum money, @interest DECIMAL(8,3), @months int)
+	RETURNS money
+AS
+	BEGIN
+		DECLARE @result MONEY = @sum*(1 + @interest/1200)*@months
+		RETURN @result
+	END
+GO
+
+4. USE TestTSQL
+GO
+
+CREATE PROC usp_ApplyInterestRateForOneMonth
+	@AccountId INT,
+	@InterestRate DECIMAL(8,3)
+	AS
+		UPDATE Accounts
+		SET Balance = dbo.ufn_InterestCalculator(Balance, @InterestRate, 1)
+		WHERE id = @AccountId
+	GO
+
+5. 
+
