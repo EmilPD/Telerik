@@ -94,5 +94,64 @@ CREATE PROC usp_ApplyInterestRateForOneMonth
 		WHERE id = @AccountId
 	GO
 
-5. 
+5. USE TestTSQL
+GO
 
+CREATE PROC usp_WithdrawMoney(
+	@AccountId INT,
+	@Amount MONEY = 0)
+	AS
+		BEGIN TRAN
+			UPDATE Accounts
+				SET Balance = Balance - @Amount
+				WHERE id = @AccountId
+		COMMIT TRAN
+	GO
+
+EXEC usp_WithdrawMoney 3, 1000
+
+CREATE PROC usp_DepositMoney(
+	@AccountId INT,
+	@Amount MONEY = 0)
+	AS
+		BEGIN TRAN
+			UPDATE Accounts
+				SET Balance = Balance + @Amount
+				WHERE id = @AccountId
+		COMMIT TRAN
+	GO
+
+EXEC usp_DepositMoney 3, 1000
+
+6. USE TestTSQL
+GO
+
+CREATE TABLE Logs(
+	[Id] INT IDENTITY NOT NULL,
+	[AccountId] INT NOT NULL,
+	[OldSum] MONEY,
+	[NewSum] MONEY,
+	CONSTRAINT PK_Logs PRIMARY KEY(Id),
+	CONSTRAINT FK_Logs_Accounts
+		FOREIGN KEY(AccountId)
+		REFERENCES Accounts(Id)
+)
+GO
+
+CREATE TRIGGER trig_Accounts_Update
+	ON Accounts
+	FOR UPDATE 
+	AS
+		BEGIN
+			INSERT INTO Logs(AccountID, OldSum, NewSum)
+			SELECT i.Id, d.Balance, i.Balance
+				FROM INSERTED i
+				JOIN DELETED d
+					ON i.Id = d.Id
+		END
+	GO
+
+UPDATE Accounts
+	SET Balance = Balance + 500
+		WHERE Id = 5
+	GO
